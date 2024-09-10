@@ -18,7 +18,11 @@
         android:id="@+id/wordDetailFragment"
         android:name="com.tolganacar.englishcards.ui.fragment.WordDetailFragment"
         android:label="fragment_word_detail"
-        tools:layout="@layout/fragment_word_detail" />
+        tools:layout="@layout/fragment_word_detail" >
+        <argument
+            android:name="word"
+            app:argType="com.tolganacar.englishcards.data.model.EnglishWords" />
+    </fragment>
     <fragment
         android:id="@+id/learnedWordListFragment"
         android:name="com.tolganacar.englishcards.ui.fragment.LearnedWordListFragment"
