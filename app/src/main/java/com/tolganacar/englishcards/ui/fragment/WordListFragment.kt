@@ -1,5 +1,6 @@
 package com.tolganacar.englishcards.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -39,9 +40,13 @@ class WordListFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.words.observe(viewLifecycleOwner) {
-            it?.let {
-                adapterWordList.wordList = it
+        val sharedPreferences = requireContext().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
+        val learnedWordsSet = sharedPreferences.getStringSet("learned_words_set", emptySet()) ?: emptySet()
+
+        viewModel.words.observe(viewLifecycleOwner) { wordList ->
+            wordList?.let {
+                val filteredList = it.filter { word -> !learnedWordsSet.contains(word.word) }
+                adapterWordList.wordList = filteredList
                 adapterWordList.notifyDataSetChanged()
             }
         }
