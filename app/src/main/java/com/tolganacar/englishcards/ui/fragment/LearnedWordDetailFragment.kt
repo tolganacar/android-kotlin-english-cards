@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.tolganacar.englishcards.data.model.EnglishWords
 import com.tolganacar.englishcards.databinding.FragmentLearnedWordDetailBinding
 import com.tolganacar.englishcards.ui.viewmodel.WordListViewModel
 
@@ -49,18 +51,29 @@ class LearnedWordDetailFragment : Fragment() {
 
     private fun unlearnButtonOnClick() {
         binding.buttonUnlearned.setOnClickListener {
+            val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+
             val bundle: LearnedWordDetailFragmentArgs by navArgs()
             val word = bundle.learnedWord
 
-            val editor = sharedPreferences.edit()
-            val learnedWordsSet = sharedPreferences.getStringSet("learned_words_set", mutableSetOf()) ?: mutableSetOf()
-            learnedWordsSet.remove(word.word)
-            editor.putStringSet("learned_words_set", learnedWordsSet)
-            editor.apply()
+            val gson = Gson()
+            val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
+            val learnedWords = if (learnedWordsJson != null) {
+                gson.fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toMutableList()
+            } else {
+                mutableListOf()
+            }
 
-            viewModel.markWordAsUnlearned(word)
+            if (learnedWords.contains(word)) {
+                learnedWords.remove(word)
+                val updatedLearnedWordsJson = gson.toJson(learnedWords)
+                editor.putString("learned_words_list", updatedLearnedWordsJson)
+                editor.apply()
+            }
 
             Snackbar.make(requireView(), "Word unlearned!", Snackbar.LENGTH_SHORT).show()
         }
     }
+
 }
