@@ -2,4 +2,6 @@
     <string name="app_name">EnglishCards</string>
     <string name="word_list">Word List</string>
     <string name="learned">Learned</string>
+    <string name="learned_button">LEARNED</string>
+    <string name="unlearned">UNLEARNED</string>
 </resources>
