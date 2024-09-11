@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_word_list" >
         <action
             android:id="@+id/action_wordListFragment_to_wordDetailFragment"
-            app:destination="@id/wordDetailFragment" />
+            app:destination="@id/wordDetailFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
         android:id="@+id/wordDetailFragment"
@@ -30,7 +34,11 @@
         tools:layout="@layout/fragment_learned_word_list" >
         <action
             android:id="@+id/action_learnedWordListFragment_to_learnedWordDetailFragment"
-            app:destination="@id/learnedWordDetailFragment" />
+            app:destination="@id/learnedWordDetailFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
         android:id="@+id/learnedWordDetailFragment"
