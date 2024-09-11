@@ -74,4 +74,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEnglishSentence"
         tools:text="Her gün bir elma yerim." />
+
+    <Button
+        android:id="@+id/buttonLearned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/learned_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTurkishSentence" />
 </androidx.constraintlayout.widget.ConstraintLayout>

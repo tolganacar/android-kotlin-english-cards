@@ -10,9 +10,6 @@ class WordListViewModel : ViewModel() {
     private val _words = MutableLiveData<List<EnglishWords>?>()
     val words: MutableLiveData<List<EnglishWords>?> get() = _words
 
-    private val _learnedWords = MutableLiveData<List<EnglishWords>?>()
-    val learnedWords: MutableLiveData<List<EnglishWords>?> get() = _learnedWords
-
     init {
         loadWords()
     }
@@ -80,20 +77,6 @@ class WordListViewModel : ViewModel() {
             EnglishWords("Towel", "ˈtaʊəl", R.drawable.apple, "Havlu", "He dried his hands with a towel.", "Ellerini havluyla kuruttu.")
         )
         _words.value = wordList.shuffled()
-    }
-
-    fun markWordAsLearned(word: EnglishWords) {
-        word.isLearned = true
-        val updatedList = _words.value?.filter { !it.isLearned }
-        _words.value = updatedList
-        _learnedWords.value = _learnedWords.value?.plus(word) ?: listOf(word)
-    }
-
-    fun markWordAsUnlearned(word: EnglishWords) {
-        word.isLearned = false
-        val updatedLearnedList = _learnedWords.value?.filter { it != word }
-        _learnedWords.value = updatedLearnedList
-        _words.value = _words.value?.plus(word)?.shuffled()
     }
 
     fun refreshWords() {

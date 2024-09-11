@@ -36,5 +36,9 @@
         android:id="@+id/learnedWordDetailFragment"
         android:name="com.tolganacar.englishcards.ui.fragment.LearnedWordDetailFragment"
         android:label="fragment_learned_word_detail"
-        tools:layout="@layout/fragment_learned_word_detail" />
+        tools:layout="@layout/fragment_learned_word_detail" >
+        <argument
+            android:name="learnedWord"
+            app:argType="com.tolganacar.englishcards.data.model.EnglishWords" />
+    </fragment>
 </navigation>

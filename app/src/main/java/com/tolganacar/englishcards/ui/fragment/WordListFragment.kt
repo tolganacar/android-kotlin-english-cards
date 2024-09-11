@@ -1,5 +1,7 @@
 package com.tolganacar.englishcards.ui.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.tolganacar.englishcards.data.model.EnglishWords
 import com.tolganacar.englishcards.databinding.FragmentWordListBinding
 import com.tolganacar.englishcards.ui.adapter.WordListAdapter
 import com.tolganacar.englishcards.ui.viewmodel.WordListViewModel
@@ -39,11 +43,20 @@ class WordListFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.words.observe(viewLifecycleOwner) {
-            it?.let {
-                adapterWordList.wordList = it
-                adapterWordList.notifyDataSetChanged()
+        viewModel.words.observe(viewLifecycleOwner) { wordList ->
+            val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
+            val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
+
+            val learnedWords: List<EnglishWords> = if (learnedWordsJson != null) {
+                Gson().fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toList()
+            } else {
+                emptyList()
             }
+
+            val filteredWords = wordList?.filterNot { learnedWords.contains(it) } ?: emptyList()
+
+            adapterWordList.wordList = filteredWords
+            adapterWordList.notifyDataSetChanged()
         }
     }
 
