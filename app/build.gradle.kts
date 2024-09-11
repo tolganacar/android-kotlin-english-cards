@@ -53,5 +53,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.swiperefreshlayout)
     implementation (libs.gson)
-
+    implementation (libs.lottie)
 }
