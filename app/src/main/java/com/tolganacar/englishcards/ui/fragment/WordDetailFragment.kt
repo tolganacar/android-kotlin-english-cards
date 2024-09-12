@@ -8,17 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.tolganacar.englishcards.data.model.EnglishWords
 import com.tolganacar.englishcards.databinding.FragmentWordDetailBinding
-import com.tolganacar.englishcards.ui.viewmodel.WordListViewModel
+import com.tolganacar.englishcards.utils.animateFlip
 
 class WordDetailFragment : Fragment() {
     private lateinit var binding: FragmentWordDetailBinding
     private lateinit var sharedPreferences: SharedPreferences
-    private val viewModel: WordListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +33,8 @@ class WordDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getWordDetail()
         learnedButtonOnClick()
+        imageViewAnimateFlip()
+        imageViewAnimateFlipOnClick()
     }
 
     private fun getWordDetail() {
@@ -48,23 +48,6 @@ class WordDetailFragment : Fragment() {
         binding.textViewPronunciationDetail.text = word.pronunciation
         binding.imageViewWordDetail.setImageResource(word.image)
     }
-
-//    private fun learnedButtonOnClick() {
-//        binding.buttonLearned.setOnClickListener {
-//            val bundle: WordDetailFragmentArgs by navArgs()
-//            val word = bundle.word
-//
-//            val editor = sharedPreferences.edit()
-//            val learnedWordsSet = sharedPreferences.getStringSet("learned_words_set", mutableSetOf()) ?: mutableSetOf()
-//            learnedWordsSet.add(word.word)
-//            editor.putStringSet("learned_words_set", learnedWordsSet)
-//            editor.apply()
-//
-//            viewModel.markWordAsLearned(word)
-//
-//            Snackbar.make(requireView(), "Word learned!", Snackbar.LENGTH_SHORT).show()
-//        }
-//    }
 
     private fun learnedButtonOnClick() {
         binding.buttonLearned.setOnClickListener {
@@ -93,4 +76,13 @@ class WordDetailFragment : Fragment() {
         }
     }
 
+    private fun imageViewAnimateFlip() {
+        binding.imageViewWordDetail.animateFlip()
+    }
+
+    private fun imageViewAnimateFlipOnClick() {
+        binding.imageViewWordDetail.setOnClickListener {
+            binding.imageViewWordDetail.animateFlip()
+        }
+    }
 }

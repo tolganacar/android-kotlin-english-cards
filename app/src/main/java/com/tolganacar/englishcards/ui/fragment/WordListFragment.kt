@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.gson.Gson
 import com.tolganacar.englishcards.data.model.EnglishWords
 import com.tolganacar.englishcards.databinding.FragmentWordListBinding
+import com.tolganacar.englishcards.ui.adapter.StackPageTransformer
 import com.tolganacar.englishcards.ui.adapter.WordListAdapter
 import com.tolganacar.englishcards.ui.viewmodel.WordListViewModel
 
@@ -39,8 +39,9 @@ class WordListFragment : Fragment() {
     }
 
     private fun initializeAdapter() {
-        binding.recyclerViewWordList.adapter = adapterWordList
-        binding.recyclerViewWordList.layoutManager = LinearLayoutManager(requireContext())
+        binding.viewPagerWordList.adapter = adapterWordList
+        binding.viewPagerWordList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.viewPagerWordList.setPageTransformer(StackPageTransformer())
     }
 
     private fun observeLiveData() {
