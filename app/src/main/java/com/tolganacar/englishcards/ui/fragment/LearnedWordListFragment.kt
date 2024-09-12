@@ -7,18 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.tolganacar.englishcards.data.model.EnglishWords
 import com.tolganacar.englishcards.databinding.FragmentLearnedWordListBinding
 import com.tolganacar.englishcards.ui.adapter.LearnedWordListAdapter
-import com.tolganacar.englishcards.ui.viewmodel.WordListViewModel
 
 class LearnedWordListFragment : Fragment() {
 
     private lateinit var binding: FragmentLearnedWordListBinding
-    private val viewModel: WordListViewModel by activityViewModels() // activityViewModels kullanarak aynı ViewModel'e erişiyoruz
     private lateinit var adapterLearnedWords: LearnedWordListAdapter
 
     override fun onCreateView(
@@ -37,7 +34,7 @@ class LearnedWordListFragment : Fragment() {
     }
 
     private fun initializeAdapter() {
-        adapterLearnedWords = LearnedWordListAdapter(emptyList()) // Başlangıçta boş bir liste veriyoruz
+        adapterLearnedWords = LearnedWordListAdapter(emptyList())
         binding.recyclerViewLearnedWordList.adapter = adapterLearnedWords
         binding.recyclerViewLearnedWordList.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -52,5 +49,4 @@ class LearnedWordListFragment : Fragment() {
             adapterLearnedWords.notifyDataSetChanged()
         }
     }
-
 }

@@ -7,18 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.tolganacar.englishcards.data.model.EnglishWords
 import com.tolganacar.englishcards.databinding.FragmentLearnedWordDetailBinding
-import com.tolganacar.englishcards.ui.viewmodel.WordListViewModel
+import com.tolganacar.englishcards.utils.animateFlip
 
 class LearnedWordDetailFragment : Fragment() {
     private lateinit var binding: FragmentLearnedWordDetailBinding
     private lateinit var sharedPreferences: SharedPreferences
-    private val viewModel: WordListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +33,8 @@ class LearnedWordDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getWordDetail()
         unlearnButtonOnClick()
+        imageViewAnimateFlip()
+        imageViewAnimateFlipOnClick()
     }
 
     private fun getWordDetail() {
@@ -76,4 +76,13 @@ class LearnedWordDetailFragment : Fragment() {
         }
     }
 
+    private fun imageViewAnimateFlip() {
+        binding.imageViewWordDetail.animateFlip()
+    }
+
+    private fun imageViewAnimateFlipOnClick() {
+        binding.imageViewWordDetail.setOnClickListener {
+            binding.imageViewWordDetail.animateFlip()
+        }
+    }
 }
