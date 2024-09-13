@@ -14,7 +14,8 @@
 - **Level Filtering**: Filter words based on difficulty levels using chip buttons.
 - **MVVM Architecture**: Uses the Model-View-ViewModel pattern to separate concerns and enhance scalability.
 - **Dynamic UI Design**: Professional user interface with interactive elements and color themes.
-  
+- **Dark Theme**
+
 ## Technologies Used
 
 - **Programming Language**: Kotlin
