@@ -23,30 +23,22 @@ class LearnedWordDetailFragment : Fragment(), TextToSpeech.OnInitListener {
     private lateinit var binding: FragmentLearnedWordDetailBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var tts: TextToSpeech
+    private val args: LearnedWordDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLearnedWordDetailBinding.inflate(inflater, container, false)
-
         sharedPreferences = requireContext().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
-
         tts = TextToSpeech(context, this)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getWordDetail()
-        unlearnButtonOnClick()
-        imageViewAnimateFlip()
-        imageViewAnimateFlipOnClick()
-
-        binding.imageViewSpeaker.setOnClickListener {
-            speakOut(binding.textViewWordDetail.text.toString())
-        }
+        setupUI()
+        setupListeners()
     }
 
     override fun onInit(status: Int) {
@@ -55,21 +47,39 @@ class LearnedWordDetailFragment : Fragment(), TextToSpeech.OnInitListener {
         }
     }
 
-    private fun speakOut(text: String) {
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    private fun setupUI() {
+        val word = args.learnedWord
+
+        with(binding) {
+            textViewWordDetail.text = word.word
+            textViewTranslation.text = word.translation
+            textViewEnglishSentence.text = word.englishSampleSentence
+            textViewTurkishSentence.text = word.turkishSampleSentence
+            textViewPronunciationDetail.text = word.pronunciation
+            textViewLevel.text = word.level
+
+            textViewLevel.setTextColor(getLevelColor(word.level))
+            imageViewWordDetail.setImageResource(word.image)
+            binding.imageViewWordDetail.animateFlip()
+        }
     }
 
-    private fun getWordDetail() {
-        val bundle: LearnedWordDetailFragmentArgs by navArgs()
-        val word = bundle.learnedWord
+    private fun setupListeners() {
+        binding.imageViewSpeaker.setOnClickListener {
+            speakOut(binding.textViewWordDetail.text.toString())
+        }
 
-        binding.textViewWordDetail.text = word.word
-        binding.textViewTranslation.text = word.translation
-        binding.textViewEnglishSentence.text = word.englishSampleSentence
-        binding.textViewTurkishSentence.text = word.turkishSampleSentence
-        binding.textViewPronunciationDetail.text = word.pronunciation
-        binding.textViewLevel.text = word.level
-        val color = when (word.level) {
+        binding.buttonUnlearned.setOnClickListener {
+            unlearnWord(args.learnedWord)
+        }
+
+        binding.imageViewWordDetail.setOnClickListener {
+            binding.imageViewWordDetail.animateFlip()
+        }
+    }
+
+    private fun getLevelColor(level: String): Int {
+        val colorRes = when (level) {
             "A1" -> R.color.a1
             "A2" -> R.color.a2
             "B1" -> R.color.b1
@@ -78,55 +88,42 @@ class LearnedWordDetailFragment : Fragment(), TextToSpeech.OnInitListener {
             "C2" -> R.color.c2
             else -> R.color.black
         }
-        val resolvedColor = ContextCompat.getColor(binding.root.context, color)
-        binding.textViewLevel.setTextColor(resolvedColor)
-        binding.imageViewWordDetail.setImageResource(word.image)
+        return ContextCompat.getColor(binding.root.context, colorRes)
     }
 
-    private fun unlearnButtonOnClick() {
-        binding.buttonUnlearned.setOnClickListener {
-            val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
+    private fun speakOut(text: String) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
 
-            val bundle: LearnedWordDetailFragmentArgs by navArgs()
-            val word = bundle.learnedWord
-
-            val gson = Gson()
-            val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
-            val learnedWords = if (learnedWordsJson != null) {
-                gson.fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toMutableList()
-            } else {
-                mutableListOf()
-            }
-
-            if (learnedWords.contains(word)) {
-                learnedWords.remove(word)
-                val updatedLearnedWordsJson = gson.toJson(learnedWords)
-                editor.putString("learned_words_list", updatedLearnedWordsJson)
-                editor.apply()
-            }
-
+    private fun unlearnWord(word: EnglishWords) {
+        val learnedWords = getLearnedWords().toMutableList()
+        if (learnedWords.contains(word)) {
+            learnedWords.remove(word)
+            saveLearnedWords(learnedWords)
             Snackbar.make(requireView(), "${word.word} unlearned!", Snackbar.LENGTH_SHORT).show()
-
             findNavController().navigateUp()
         }
     }
 
-    private fun imageViewAnimateFlip() {
-        binding.imageViewWordDetail.animateFlip()
+    private fun getLearnedWords(): List<EnglishWords> {
+        val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
+        return if (learnedWordsJson != null) {
+            Gson().fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toList()
+        } else {
+            emptyList()
+        }
     }
 
-    private fun imageViewAnimateFlipOnClick() {
-        binding.imageViewWordDetail.setOnClickListener {
-            binding.imageViewWordDetail.animateFlip()
-        }
+    private fun saveLearnedWords(learnedWords: List<EnglishWords>) {
+        val editor = sharedPreferences.edit()
+        val updatedLearnedWordsJson = Gson().toJson(learnedWords)
+        editor.putString("learned_words_list", updatedLearnedWordsJson)
+        editor.apply()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (tts != null) {
-            tts.stop()
-            tts.shutdown()
-        }
+        tts.stop()
+        tts.shutdown()
     }
 }
