@@ -4,4 +4,5 @@
     <string name="learned">Learned</string>
     <string name="learned_button">LEARNED</string>
     <string name="unlearned">UNLEARNED</string>
+    <string name="words_are_still_waiting_to_be_discovered">Words are still waiting to be discovered!🕵️‍♂️</string>
 </resources>
