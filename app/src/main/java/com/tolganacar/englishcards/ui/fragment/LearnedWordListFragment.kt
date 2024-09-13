@@ -17,39 +17,54 @@ class LearnedWordListFragment : Fragment() {
 
     private lateinit var binding: FragmentLearnedWordListBinding
     private lateinit var adapterLearnedWords: LearnedWordListAdapter
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLearnedWordListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
 
-        initializeAdapter()
-        observeLearnedWords()
+        setupRecyclerView()
+        loadLearnedWords()
     }
 
-    private fun initializeAdapter() {
+    private fun setupRecyclerView() {
         adapterLearnedWords = LearnedWordListAdapter(emptyList())
-        binding.recyclerViewLearnedWordList.adapter = adapterLearnedWords
-        binding.recyclerViewLearnedWordList.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewLearnedWordList.apply {
+            adapter = adapterLearnedWords
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
-    private fun observeLearnedWords() {
-        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
-        val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
-        if (learnedWordsJson != null) {
-            val gson = Gson()
-            val learnedWords: List<EnglishWords> = gson.fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toList()
-            adapterLearnedWords.learnedWordList = learnedWords
-            adapterLearnedWords.notifyDataSetChanged()
-        }
+    private fun loadLearnedWords() {
+        val learnedWords = getLearnedWordsFromPrefs()
+        updateLearnedWordsList(learnedWords)
+        handleEmptyState(learnedWords.isEmpty())
+    }
 
-        if (adapterLearnedWords.learnedWordList.isEmpty()) {
+    private fun getLearnedWordsFromPrefs(): List<EnglishWords> {
+        val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
+        return if (learnedWordsJson != null) {
+            Gson().fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toList()
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun updateLearnedWordsList(learnedWords: List<EnglishWords>) {
+        adapterLearnedWords.learnedWordList = learnedWords
+        adapterLearnedWords.notifyDataSetChanged()
+    }
+
+    private fun handleEmptyState(isEmpty: Boolean) {
+        if (isEmpty) {
             binding.animationView.visibility = View.VISIBLE
             binding.textViewNoWords.visibility = View.VISIBLE
         } else {
