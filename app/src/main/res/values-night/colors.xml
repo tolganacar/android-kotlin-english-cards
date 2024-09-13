@@ -2,11 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="button_color">#94154A</color>
-    <color name="text_color">#082E52</color>
-    <color name="button_text_color">#FFFFFF</color>
-    <color name="background">#FFDAA9</color>
-    <color name="list_item_background">#fff0db</color>
+    <color name="button_color">#646A71</color>
+    <color name="button_text_color">#E8ECEB</color>
+    <color name="text_color">#E8ECEB</color>
+    <color name="background">#24292E</color>
+    <color name="list_item_background">#3B3E43</color>
     <color name="a1">#00C853</color>
     <color name="a2">#64DD17</color>
     <color name="b1">#0091EA</color>
