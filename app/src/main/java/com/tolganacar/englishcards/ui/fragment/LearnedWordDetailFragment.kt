@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -105,7 +106,9 @@ class LearnedWordDetailFragment : Fragment(), TextToSpeech.OnInitListener {
                 editor.apply()
             }
 
-            Snackbar.make(requireView(), "Word unlearned!", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "${word.word} unlearned!", Snackbar.LENGTH_SHORT).show()
+
+            findNavController().navigateUp()
         }
     }
 

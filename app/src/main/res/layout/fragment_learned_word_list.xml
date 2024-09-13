@@ -6,6 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.LearnedWordListFragment">
 
+    <TextView
+        android:id="@+id/textViewNoWords"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_alternates_semibold_italic"
+        android:text="@string/words_are_still_waiting_to_be_discovered"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textColor="@color/text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animationView" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/nothing_found" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLearnedWordList"
         android:layout_width="0dp"

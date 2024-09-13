@@ -48,5 +48,13 @@ class LearnedWordListFragment : Fragment() {
             adapterLearnedWords.learnedWordList = learnedWords
             adapterLearnedWords.notifyDataSetChanged()
         }
+
+        if (adapterLearnedWords.learnedWordList.isEmpty()) {
+            binding.animationView.visibility = View.VISIBLE
+            binding.textViewNoWords.visibility = View.VISIBLE
+        } else {
+            binding.animationView.visibility = View.GONE
+            binding.textViewNoWords.visibility = View.GONE
+        }
     }
 }
