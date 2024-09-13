@@ -1,7 +1,6 @@
 package com.tolganacar.englishcards.ui.fragment
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,42 +34,30 @@ class WordListFragment : Fragment() {
 
         initializeAdapter()
         observeLiveData()
-        swipeRefresh()
+        setupSwipeRefresh()
+        setupLevelFilter()
 
         val lastSelectedLevel = loadSelectedLevel()
         filterWordsByLevel(lastSelectedLevel)
-
-        setupLevelFilter()
     }
 
     private fun initializeAdapter() {
-        binding.viewPagerWordList.adapter = adapterWordList
-        binding.viewPagerWordList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.viewPagerWordList.setPageTransformer(StackPageTransformer())
+        binding.viewPagerWordList.apply {
+            adapter = adapterWordList
+            orientation = ViewPager2.ORIENTATION_HORIZONTAL
+            setPageTransformer(StackPageTransformer())
+        }
     }
 
     private fun observeLiveData() {
         viewModel.words.observe(viewLifecycleOwner) { wordList ->
-            val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
-            val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
-
-            val learnedWords: List<EnglishWords> = if (learnedWordsJson != null) {
-                Gson().fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toList()
-            } else {
-                emptyList()
-            }
-
+            val learnedWords = getLearnedWordsFromPrefs()
             val lastSelectedLevel = loadSelectedLevel()
-            val filteredWords = wordList?.filterNot { learnedWords.contains(it) }?.filter { word ->
-                lastSelectedLevel == null || word.level == lastSelectedLevel
-            } ?: emptyList()
-
-            adapterWordList.wordList = filteredWords
-            adapterWordList.notifyDataSetChanged()
+            updateWordList(wordList, learnedWords, lastSelectedLevel)
         }
     }
 
-    private fun swipeRefresh() {
+    private fun setupSwipeRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshWords()
             binding.swipeRefreshLayout.isRefreshing = false
@@ -80,39 +67,49 @@ class WordListFragment : Fragment() {
     private fun filterWordsByLevel(level: String?) {
         saveSelectedLevel(level)
         viewModel.words.observe(viewLifecycleOwner) { wordList ->
-            val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
-            val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
-
-            val learnedWords: List<EnglishWords> = if (learnedWordsJson != null) {
-                Gson().fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toList()
-            } else {
-                emptyList()
-            }
-
-            val filteredWords = wordList?.filterNot { learnedWords.contains(it) }?.filter { word ->
-                level == null || word.level == level
-            } ?: emptyList()
-
-            adapterWordList.wordList = filteredWords
-            adapterWordList.notifyDataSetChanged()
+            val learnedWords = getLearnedWordsFromPrefs()
+            updateWordList(wordList, learnedWords, level)
         }
     }
 
+    private fun updateWordList(
+        wordList: List<EnglishWords>?,
+        learnedWords: List<EnglishWords>,
+        level: String?
+    ) {
+        val filteredWords = wordList?.filterNot { learnedWords.contains(it) }
+            ?.filter { word -> level == null || word.level == level }
+            ?: emptyList()
+
+        adapterWordList.wordList = filteredWords
+        adapterWordList.notifyDataSetChanged()
+    }
+
     private fun setupLevelFilter() {
-        binding.btnAll.setOnClickListener { filterWordsByLevel(null) }
-        binding.btnA1.setOnClickListener { filterWordsByLevel("A1") }
-        binding.btnA2.setOnClickListener { filterWordsByLevel("A2") }
-        binding.btnB1.setOnClickListener { filterWordsByLevel("B1") }
-        binding.btnB2.setOnClickListener { filterWordsByLevel("B2") }
-        binding.btnC1.setOnClickListener { filterWordsByLevel("C1") }
-        binding.btnC2.setOnClickListener { filterWordsByLevel("C2") }
+        binding.apply {
+            btnAll.setOnClickListener { filterWordsByLevel(null) }
+            btnA1.setOnClickListener { filterWordsByLevel("A1") }
+            btnA2.setOnClickListener { filterWordsByLevel("A2") }
+            btnB1.setOnClickListener { filterWordsByLevel("B1") }
+            btnB2.setOnClickListener { filterWordsByLevel("B2") }
+            btnC1.setOnClickListener { filterWordsByLevel("C1") }
+            btnC2.setOnClickListener { filterWordsByLevel("C2") }
+        }
+    }
+
+    private fun getLearnedWordsFromPrefs(): List<EnglishWords> {
+        val sharedPreferences = requireActivity().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
+        val learnedWordsJson = sharedPreferences.getString("learned_words_list", null)
+        return if (learnedWordsJson != null) {
+            Gson().fromJson(learnedWordsJson, Array<EnglishWords>::class.java).toList()
+        } else {
+            emptyList()
+        }
     }
 
     private fun saveSelectedLevel(level: String?) {
         val sharedPreferences = requireActivity().getSharedPreferences("selected_level", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("last_selected_level", level)
-        editor.apply()
+        sharedPreferences.edit().putString("last_selected_level", level).apply()
     }
 
     private fun loadSelectedLevel(): String? {
