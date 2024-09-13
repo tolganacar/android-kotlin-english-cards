@@ -8,4 +8,5 @@ data class EnglishWords(val word: String,
                         val translation: String,
                         val englishSampleSentence: String,
                         val turkishSampleSentence: String,
+                        val level: String,
                         var isLearned: Boolean = false) : Serializable
