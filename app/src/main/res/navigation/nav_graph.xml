@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/wordListFragment">
+
+    <fragment
+        android:id="@+id/wordListFragment"
+        android:name="com.tolganacar.englishcards.ui.fragment.WordListFragment"
+        android:label="fragment_word_list"
+        tools:layout="@layout/fragment_word_list" >
+        <action
+            android:id="@+id/action_wordListFragment_to_wordDetailFragment"
+            app:destination="@id/wordDetailFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/wordDetailFragment"
+        android:name="com.tolganacar.englishcards.ui.fragment.WordDetailFragment"
+        android:label="fragment_word_detail"
+        tools:layout="@layout/fragment_word_detail" >
+        <argument
+            android:name="word"
+            app:argType="com.tolganacar.englishcards.data.model.EnglishWords" />
+    </fragment>
+    <fragment
+        android:id="@+id/learnedWordListFragment"
+        android:name="com.tolganacar.englishcards.ui.fragment.LearnedWordListFragment"
+        android:label="fragment_learned_word_list"
+        tools:layout="@layout/fragment_learned_word_list" >
+        <action
+            android:id="@+id/action_learnedWordListFragment_to_learnedWordDetailFragment"
+            app:destination="@id/learnedWordDetailFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/learnedWordDetailFragment"
+        android:name="com.tolganacar.englishcards.ui.fragment.LearnedWordDetailFragment"
+        android:label="fragment_learned_word_detail"
+        tools:layout="@layout/fragment_learned_word_detail" >
+        <argument
+            android:name="learnedWord"
+            app:argType="com.tolganacar.englishcards.data.model.EnglishWords" />
+    </fragment>
+</navigation>

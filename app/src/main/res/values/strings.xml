@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">English Cards</string>
+    <string name="word_list">Word List</string>
+    <string name="learned">Learned</string>
+    <string name="learned_button">LEARNED</string>
+    <string name="unlearned">UNLEARNED</string>
+    <string name="words_are_still_waiting_to_be_discovered">Words are still waiting to be discovered!🕵️‍♂️</string>
+    <string name="all">All</string>
+    <string name="a1">A1</string>
+    <string name="a2">A2</string>
+    <string name="b1">B1</string>
+    <string name="b2">B2</string>
+    <string name="c1">C1</string>
+    <string name="c2">C2</string>
+</resources>
