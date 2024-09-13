@@ -3,20 +3,25 @@ package com.tolganacar.englishcards.ui.fragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.tolganacar.englishcards.R
 import com.tolganacar.englishcards.data.model.EnglishWords
 import com.tolganacar.englishcards.databinding.FragmentLearnedWordDetailBinding
 import com.tolganacar.englishcards.utils.animateFlip
+import java.util.*
 
-class LearnedWordDetailFragment : Fragment() {
+class LearnedWordDetailFragment : Fragment(), TextToSpeech.OnInitListener {
     private lateinit var binding: FragmentLearnedWordDetailBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var tts: TextToSpeech
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +30,8 @@ class LearnedWordDetailFragment : Fragment() {
         binding = FragmentLearnedWordDetailBinding.inflate(inflater, container, false)
 
         sharedPreferences = requireContext().getSharedPreferences("learned_words", Context.MODE_PRIVATE)
+
+        tts = TextToSpeech(context, this)
 
         return binding.root
     }
@@ -35,6 +42,20 @@ class LearnedWordDetailFragment : Fragment() {
         unlearnButtonOnClick()
         imageViewAnimateFlip()
         imageViewAnimateFlipOnClick()
+
+        binding.imageViewSpeaker.setOnClickListener {
+            speakOut(binding.textViewWordDetail.text.toString())
+        }
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            tts.language = Locale.US
+        }
+    }
+
+    private fun speakOut(text: String) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
 
     private fun getWordDetail() {
@@ -46,6 +67,18 @@ class LearnedWordDetailFragment : Fragment() {
         binding.textViewEnglishSentence.text = word.englishSampleSentence
         binding.textViewTurkishSentence.text = word.turkishSampleSentence
         binding.textViewPronunciationDetail.text = word.pronunciation
+        binding.textViewLevel.text = word.level
+        val color = when (word.level) {
+            "A1" -> R.color.a1
+            "A2" -> R.color.a2
+            "B1" -> R.color.b1
+            "B2" -> R.color.b2
+            "C1" -> R.color.c1
+            "C2" -> R.color.c2
+            else -> R.color.black
+        }
+        val resolvedColor = ContextCompat.getColor(binding.root.context, color)
+        binding.textViewLevel.setTextColor(resolvedColor)
         binding.imageViewWordDetail.setImageResource(word.image)
     }
 
@@ -83,6 +116,14 @@ class LearnedWordDetailFragment : Fragment() {
     private fun imageViewAnimateFlipOnClick() {
         binding.imageViewWordDetail.setOnClickListener {
             binding.imageViewWordDetail.animateFlip()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (tts != null) {
+            tts.stop()
+            tts.shutdown()
         }
     }
 }

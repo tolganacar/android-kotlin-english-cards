@@ -8,80 +8,129 @@
 
     <TextView
         android:id="@+id/textViewWordDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="24sp"
+        android:fontFamily="@font/montserrat_alternates_bold"
+        android:textAlignment="center"
+        android:textColor="@color/text_color"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutPronunciation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Apple" />
+        tools:text="Dog" />
 
-    <TextView
-        android:id="@+id/textViewPronunciationDetail"
+    <LinearLayout
+        android:id="@+id/linearLayoutPronunciation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWordDetail"
-        tools:text="ˈæpəl" />
+        app:layout_constraintBottom_toTopOf="@+id/imageViewWordDetail"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWordDetail">
+
+        <TextView
+            android:id="@+id/textViewPronunciationDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="24sp"
+            tools:text="dɔg" />
+
+        <ImageView
+            android:id="@+id/imageViewSpeaker"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_volume" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageViewWordDetail"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/apple"
+        android:elevation="8dp"
+        android:src="@drawable/dog"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTranslation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPronunciationDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutPronunciation" />
 
     <TextView
         android:id="@+id/textViewTranslation"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="24sp"
+        android:fontFamily="@font/montserrat_alternates_bold"
+        android:textAlignment="center"
+        android:textColor="@color/text_color"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEnglishSentence"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewWordDetail"
-        tools:text="Elma" />
+        tools:text="Köpek" />
 
     <TextView
         android:id="@+id/textViewEnglishSentence"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:background="@color/list_item_background"
         android:textAlignment="center"
+        android:textColor="@color/text_color"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTurkishSentence"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTranslation"
-        tools:text="I eat an apple every day." />
+        tools:text="The dog is barking." />
 
     <TextView
         android:id="@+id/textViewTurkishSentence"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:background="@color/list_item_background"
         android:textAlignment="center"
+        android:textColor="@color/text_color"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLevel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEnglishSentence"
-        tools:text="Her gün bir elma yerim." />
+        tools:text="Köpek havlıyor." />
+
+    <TextView
+        android:id="@+id/textViewLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLearned"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTurkishSentence"
+        tools:text="A1" />
 
     <Button
         android:id="@+id/buttonLearned"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/button_color"
         android:text="@string/learned_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTurkishSentence" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewLevel" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

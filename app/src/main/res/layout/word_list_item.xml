@@ -10,38 +10,38 @@
         android:id="@+id/cardViewWordList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/list_item_background"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
-
             <ImageView
                 android:id="@+id/imageViewWordList"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline7"
+                app:layout_constraintBottom_toTopOf="@+id/textViewWordList"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
 
             <TextView
                 android:id="@+id/textViewWordList"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="96dp"
+                android:fontFamily="@font/montserrat_alternates_bold"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
                 android:textSize="34sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewWordList"
-                app:layout_constraintStart_toStartOf="@+id/imageViewWordList"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewWordList"
                 tools:text="Lion" />
         </androidx.constraintlayout.widget.ConstraintLayout>
