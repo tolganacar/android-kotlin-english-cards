@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:backgroundTint="@color/list_item_background"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp">
 
@@ -32,11 +33,14 @@
 
             <TextView
                 android:id="@+id/textViewLearnedWordList"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:fontFamily="@font/montserrat_alternates_bold"
+                android:textColor="@color/text_color"
                 android:textSize="34sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewLearnedWordList"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Lion" />
