@@ -37,10 +37,6 @@
 3. Sync the project with Gradle files.
 4. Run the project on an emulator or physical device with Android 5.0 (Lollipop) or higher.
 
-## Support Reference
-
-Arda Işıtan
-
 ## License
 
 ```
